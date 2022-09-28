@@ -50,4 +50,11 @@ class TodoController extends Controller
 
         return ['message' => 'ok'];
     }
+
+    public function show(int $id)
+    {
+        $todo = $this->todo->findOrFail($id);
+
+        return $todo;
+    }
 }
