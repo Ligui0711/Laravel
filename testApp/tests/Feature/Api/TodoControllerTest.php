@@ -88,4 +88,32 @@ class TodoControllerTest extends TestCase
         $res->assertStatus(422);
 
     }
+    
+    /**
+     * @test
+     */
+    public function Todoの詳細取得()
+    {
+        $todo = Todo::factory()->create();
+
+        $res = $this->getJson(route('api.todo.show', $todo->id));
+
+        $res->assertOk();
+
+        $data = $res->json();
+
+        $this->assertEquals($todo->title, $data['title']);
+        $this->assertEquals($todo->content, $data['content']);
+    }
+    /**
+     * @test
+     */
+    public function Todoの詳細取得の失敗()
+    {
+        $todo = Todo::factory()->create();
+
+        $res = $this->getJson(route('api.todo.show', $todo->id = 0));
+
+        $res->assertStatus(404);
+    }
 }
