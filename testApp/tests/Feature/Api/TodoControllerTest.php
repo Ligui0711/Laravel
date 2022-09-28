@@ -116,4 +116,29 @@ class TodoControllerTest extends TestCase
 
         $res->assertStatus(404);
     }
+
+    /**
+     * @test
+     */
+    public function Todoの削除処理()
+    {
+        $todo = Todo::factory()->create();
+
+        $res = $this->deleteJson(route('api.todo.destroy', $todo->id));
+
+        $res->assertOk();
+
+        $this->assertNull(Todo::find($todo->id));
+    }
+    /**
+     * @test
+     */
+    public function Todoの削除処理の失敗()
+    {
+        $todo = Todo::factory()->create();
+
+        $res = $this->deleteJson(route('api.todo.destroy', $todo->id = 0));
+
+        $res->assertStatus(404);
+    }
 }
