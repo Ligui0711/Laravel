@@ -32,5 +32,4 @@ class TodoController extends Controller
 
         return ['message' => 'ok'];
     }
-
 }

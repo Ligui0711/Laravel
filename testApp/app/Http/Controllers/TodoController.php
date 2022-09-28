@@ -26,7 +26,7 @@ class TodoController extends Controller
         $this->todo = $todo;
     }
     // ここまで追記
-
+ 
     /**
      * Display a listing of the resource.
      *
