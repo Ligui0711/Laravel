@@ -40,15 +40,17 @@ class TodoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, int $id)
     {
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'content' => ['required', 'string', 'max:255']
         ]);
-        $this->todo->fill($validated)->save();
+        $todo = $this->todo->findOrFail($id);
 
-        return ['message' => 'ok'];
+        $todo->update($validated);
+
+        return $todo;
     }
 
     public function show(int $id)

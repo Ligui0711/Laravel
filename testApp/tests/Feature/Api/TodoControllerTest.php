@@ -57,34 +57,34 @@ class TodoControllerTest extends TestCase
      */
     public function Todoの更新処理()
     {
+        $todo = Todo::factory()->create();
+
         $params = [
             'title' => 'テスト:タイトル',
             'content' => 'テスト:内容'
         ];
 
-        $res = $this->postJson(route('api.todo.update'), $params);
+        $res = $this->putJson(route('api.todo.update', $todo->id), $params);
+
         $res->assertOk();
-        $todos = Todo::all();
 
-        $this->assertCount(1, $todos);
-
-        $todo = $todos->first();
-
-        $this->assertEquals($params['title'], $todo->title);
-        $this->assertEquals($params['content'], $todo->content);
-
+        $data = $res->json();
+        $this->assertEquals($params['title'], $data['title']);
+        $this->assertEquals($params['content'], $data['content']);
     }
     /**
      * @test
      */
     public function Todoの更新処理の失敗()
     {
+        $todo = Todo::factory()->create();
+
         $params = [
             'title' => null,
             'content' => null
         ];
 
-        $res = $this->postJson(route('api.todo.update'), $params);
+        $res = $this->putJson(route('api.todo.update', $todo->id), $params);
         $res->assertStatus(422);
 
     }
@@ -112,7 +112,7 @@ class TodoControllerTest extends TestCase
     {
         $todo = Todo::factory()->create();
 
-        $res = $this->getJson(route('api.todo.show', $todo->id = 0));
+        $res = $this->getJson(route('api.todo.show', $todo->id * 0));
 
         $res->assertStatus(404);
     }
@@ -137,7 +137,7 @@ class TodoControllerTest extends TestCase
     {
         $todo = Todo::factory()->create();
 
-        $res = $this->deleteJson(route('api.todo.destroy', $todo->id = 0));
+        $res = $this->deleteJson(route('api.todo.destroy', $todo->id * 0));
 
         $res->assertStatus(404);
     }
